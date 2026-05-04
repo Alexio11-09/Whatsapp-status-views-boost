@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Alpha VCFS · Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#0b0f0b;color:#d0d0d0;font-family:'Inter',system-ui,sans-serif;display:flex;justify-content:center;min-height:100vh;padding:20px 15px 80px}
+    .container{max-width:600px;width:100%}
+    .card{background:#121812;border:1px solid #1f2a1f;border-radius:12px;padding:20px;margin-bottom:20px}
+    h2,h3{color:#fff;margin-bottom:10px}
+    p{color:#8b9a8b;font-size:0.9rem}
+    input,select,button{width:100%;padding:12px;margin:8px 0;background:#0a0f0a;border:1px solid #1f2a1f;color:#fff;border-radius:8px;font-size:0.95rem;outline:none}
+    button{background:#4ade80;color:#000;font-weight:600;cursor:pointer;border:none}
+    button:hover{filter:brightness(1.1)}
+    button:disabled{background:#2a352a;color:#6b7b6b;cursor:not-allowed}
+    .hidden{display:none!important}
+    .warn{color:#f0f;margin-top:5px;font-size:0.85rem}
+    .link{color:#4ade80;text-decoration:none}
+    .btn-sm{padding:6px 10px;font-size:0.8rem;width:auto;background:#4ade80;color:#000;border:none;border-radius:6px;cursor:pointer}
+    .btn-outline{background:transparent;border:1px solid #4ade80;color:#4ade80}
+    .session-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #1f2a1f}
+    .progress-bar{height:6px;background:#1e2a1e;border-radius:3px;overflow:hidden;margin:8px 0}
+    .progress-fill{height:100%;background:#4ade80;width:0}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0b0f0b;border-top:1px solid #1f2a1f;display:flex;justify-content:space-around;padding:10px 5px 15px;z-index:10}
+    .nav-item{display:flex;flex-direction:column;align-items:center;color:#6b7b6b;font-size:0.7rem;cursor:pointer}
+    .nav-item.active{color:#4ade80}
+    .nav-item i{font-size:1.2rem}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;text-align:left;border-bottom:1px solid #1f2a1f;font-size:0.9rem}
+    th{color:#4ade80}
+    @media(max-width:400px){.btn-sm{font-size:0.7rem}}
+  </style>
+</head>
+<body>
+<div class="container" id="authContainer">
+  <div class="card" id="loginCard">
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p style="margin-top:10px;">No account? <a href="#" onclick="showSignup()" class="link">Sign up</a></p>
+  </div>
+  <div class="card hidden" id="signupCard">
+    <h2>Sign Up</h2>
+    <input type="email" id="signupEmail" placeholder="Email">
+    <input type="password" id="signupPassword" placeholder="Password">
+    <button onclick="signup()">Sign Up</button>
+    <p style="margin-top:10px;">Already have an account? <a href="#" onclick="showLogin()" class="link">Login</a></p>
+  </div>
+</div>
+
+<div class="container hidden" id="appContainer">
+  <!-- Home Page -->
+  <div id="homePage">
+    <div class="card">
+      <h2>Welcome, <span id="userName"></span></h2>
+      <p>Account status: <span id="planStatus">Free</span></p>
+      <p>Total sessions created: <span id="totalSessions">0</span></p>
+      <button onclick="navigate('create')">Create Session</button>
+      <button onclick="navigate('sessions')" style="background:transparent;border:1px solid #4ade80;color:#4ade80;">Manage Sessions</button>
+    </div>
+    <div class="card">
+      <h3>Quick Actions</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div onclick="navigate('create')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer;">➕ Create</div>
+        <div onclick="navigate('sessions')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer;">📋 Sessions</div>
+        <div onclick="navigate('morevcf')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer;">🌐 More VCF</div>
+        <div onclick="navigate('profile')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer;">👤 Profile</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Session Page -->
+  <div id="createPage" class="hidden">
+    <div class="card">
+      <h2>Create VCF Session</h2>
+      <input type="text" id="sessionName" placeholder="Session name">
+      <input type="number" id="sessionTarget" placeholder="Target people count">
+      <input type="number" id="sessionDuration" placeholder="Duration in days (optional)">
+      <input type="text" id="sessionGroupLink" placeholder="WhatsApp group link">
+      <input type="text" id="sessionPrefix" placeholder="Prefix (e.g. 🚀 VIP)">
+      <select id="sessionCountry">
+        <option value="">Any country</option>
+        <option value="+263">Zimbabwe</option>
+        <option value="+234">Nigeria</option>
+        <option value="+254">Kenya</option>
+        <option value="+27">South Africa</option>
+      </select>
+      <button onclick="createSession()">Create Session</button>
+      <div id="createMsg" class="warn"></div>
+    </div>
+  </div>
+
+  <!-- My Sessions Page -->
+  <div id="sessionsPage" class="hidden">
+    <div class="card">
+      <h2>My Sessions</h2>
+      <div id="mySessionsList">No sessions yet.</div>
+    </div>
+  </div>
+
+  <!-- More VCF (public sessions) -->
+  <div id="morevcfPage" class="hidden">
+    <div class="card">
+      <h2>Public Sessions</h2>
+      <div id="publicSessionsList">Loading...</div>
+    </div>
+  </div>
+
+  <!-- Profile Page -->
+  <div id="profilePage" class="hidden">
+    <div class="card">
+      <h2>Profile</h2>
+      <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+      <p><strong>Phone:</strong> <span id="profilePhone">Not set</span></p>
+      <button onclick="logout()" style="background:#f0f;color:#fff;">Logout</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav" id="bottomNav">
+  <div class="nav-item active" onclick="navigate('home')"><i class="fas fa-home"></i> Home</div>
+  <div class="nav-item" onclick="navigate('morevcf')"><i class="fas fa-globe"></i> More VCF</div>
+  <div class="nav-item" onclick="navigate('create')"><i class="fas fa-plus-circle"></i> Create</div>
+  <div class="nav-item" onclick="navigate('sessions')"><i class="fas fa-folder"></i> Sessions</div>
+  <div class="nav-item" onclick="navigate('profile')"><i class="fas fa-user"></i> Profile</div>
+</nav>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, where, getDocs, orderBy, limit, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAQwmSD9lc6A0G-AhGBMCBayhM4Ox-jcEs",
+  authDomain: "status-views-boost.firebaseapp.com",
+  projectId: "status-views-boost",
+  storageBucket: "status-views-boost.firebasestorage.app",
+  messagingSenderId: "497892708994",
+  appId: "1:497892708994:web:a169130977e576f0915a9b"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Navigation
+const pages = ["homePage","createPage","sessionsPage","morevcfPage","profilePage"];
+window.navigate = (pageId) => {
+  pages.forEach(p => document.getElementById(p)?.classList.add("hidden"));
+  document.getElementById(pageId+"Page")?.classList.remove("hidden");
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove("active"));
+  const navItems = document.querySelectorAll('.nav-item');
+  const index = ["home","morevcf","create","sessions","profile"].indexOf(pageId);
+  if(index !== -1) navItems[index].classList.add("active");
+};
+
+// Auth
+window.login = async () => {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+  try { await signInWithEmailAndPassword(auth, email, password); }
+  catch(e) { alert(e.message); }
+};
+window.signup = async () => {
+  const email = document.getElementById("signupEmail").value;
+  const password = document.getElementById("signupPassword").value;
+  try { await createUserWithEmailAndPassword(auth, email, password); }
+  catch(e) { alert(e.message); }
+};
+window.logout = () => signOut(auth);
+window.showSignup = () => {
+  document.getElementById("loginCard").classList.add("hidden");
+  document.getElementById("signupCard").classList.remove("hidden");
+};
+window.showLogin = () => {
+  document.getElementById("signupCard").classList.add("hidden");
+  document.getElementById("loginCard").classList.remove("hidden");
+};
+
+// Session creation
+window.createSession = async () => {
+  const name = document.getElementById("sessionName").value.trim();
+  const target = parseInt(document.getElementById("sessionTarget").value);
+  const groupLink = document.getElementById("sessionGroupLink").value.trim();
+  const msg = document.getElementById("createMsg");
+  if (!name || !target || !groupLink) { msg.textContent = "Required fields missing."; return; }
+  const user = auth.currentUser;
+  if (!user) return;
+  try {
+    await addDoc(collection(db, "users", user.uid, "sessions"), {
+      name, target, groupLink,
+      createdAt: new Date(),
+      prefix: document.getElementById("sessionPrefix").value.trim() || "🚀 ",
+      country: document.getElementById("sessionCountry").value,
+      duration: parseInt(document.getElementById("sessionDuration").value) || 7
+    });
+    msg.textContent = "Session created!";
+    navigate('sessions');
+  } catch(e) { msg.textContent = "Error: " + e.message; }
+};
+
+// Load user sessions
+function loadMySessions(uid) {
+  const q = query(collection(db, "users", uid, "sessions"), orderBy("createdAt", "desc"));
+  onSnapshot(q, (snap) => {
+    const list = document.getElementById("mySessionsList");
+    list.innerHTML = "";
+    if (snap.empty) { list.innerHTML = "No sessions yet."; return; }
+    snap.forEach(doc => {
+      const s = doc.data();
+      const div = document.createElement("div");
+      div.className = "session-row";
+      div.innerHTML = `
+        <div>
+          <strong>${s.name}</strong> (${s.target} target)<br>
+          <a href="/dashboard.html?id=${doc.id}" class="link">View</a>
+        </div>
+        <button class="btn-sm" onclick="copyLink('${doc.id}')">Copy Link</button>
+      `;
+      list.appendChild(div);
+    });
+  });
+}
+
+window.copyLink = (sessionId) => {
+  const link = `https://status-views-boost.vercel.app/?id=${sessionId}`;
+  navigator.clipboard.writeText(link).then(() => alert("Link copied!")).catch(() => prompt("Copy:", link));
+};
+
+// Load public sessions
+function loadPublicSessions() {
+  const q = query(collection(db, "users"));
+  onSnapshot(q, (snap) => {
+    const list = document.getElementById("publicSessionsList");
+    list.innerHTML = "";
+    snap.forEach(userDoc => {
+      const sessionsRef = collection(db, "users", userDoc.id, "sessions");
+      onSnapshot(sessionsRef, (sessionsSnap) => {
+        sessionsSnap.forEach(sessionDoc => {
+          const s = sessionDoc.data();
+          const div = document.createElement("div");
+          div.className = "session-row";
+          div.innerHTML = `<div>${s.name} by ${userDoc.id}</div>
+            <a href="/?id=${sessionDoc.id}" class="btn-sm">Upload</a>`;
+          list.appendChild(div);
+        });
+      });
+    });
+  });
+}
+
+// Auth state listener
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById("authContainer").classList.add("hidden");
+    document.getElementById("appContainer").classList.remove("hidden");
+    document.getElementById("userName").textContent = user.email;
+    document.getElementById("profileEmail").textContent = user.email;
+    loadMySessions(user.uid);
+    loadPublicSessions();
+    navigate('home');
+  } else {
+    document.getElementById("authContainer").classList.remove("hidden");
+    document.getElementById("appContainer").classList.add("hidden");
+  }
+});
+</script>
+</body>
+  </html>
