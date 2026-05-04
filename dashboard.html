@@ -67,8 +67,8 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <div onclick="navigate('create')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer;">➕ Create</div>
         <div onclick="navigate('sessions')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer;">📋 Sessions</div>
-        <div onclick="navigate('morevcf')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer;">🌐 More VCF</div>
         <div onclick="navigate('profile')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer;">👤 Profile</div>
+        <div onclick="logout()" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer;">🚪 Logout</div>
       </div>
     </div>
   </div>
@@ -102,14 +102,6 @@
     </div>
   </div>
 
-  <!-- More VCF (public sessions) -->
-  <div id="morevcfPage" class="hidden">
-    <div class="card">
-      <h2>Public Sessions</h2>
-      <div id="publicSessionsList">Loading...</div>
-    </div>
-  </div>
-
   <!-- Profile Page -->
   <div id="profilePage" class="hidden">
     <div class="card">
@@ -123,7 +115,6 @@
 
 <nav class="bottom-nav" id="bottomNav">
   <div class="nav-item active" onclick="navigate('home')"><i class="fas fa-home"></i> Home</div>
-  <div class="nav-item" onclick="navigate('morevcf')"><i class="fas fa-globe"></i> More VCF</div>
   <div class="nav-item" onclick="navigate('create')"><i class="fas fa-plus-circle"></i> Create</div>
   <div class="nav-item" onclick="navigate('sessions')"><i class="fas fa-folder"></i> Sessions</div>
   <div class="nav-item" onclick="navigate('profile')"><i class="fas fa-user"></i> Profile</div>
@@ -131,8 +122,8 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, where, getDocs, orderBy, limit, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { getDatabase, ref, set, push, onValue, get } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQwmSD9lc6A0G-AhGBMCBayhM4Ox-jcEs",
@@ -145,16 +136,16 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db = getDatabase(app);
 
 // Navigation
-const pages = ["homePage","createPage","sessionsPage","morevcfPage","profilePage"];
+const pages = ["homePage","createPage","sessionsPage","profilePage"];
 window.navigate = (pageId) => {
   pages.forEach(p => document.getElementById(p)?.classList.add("hidden"));
   document.getElementById(pageId+"Page")?.classList.remove("hidden");
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove("active"));
   const navItems = document.querySelectorAll('.nav-item');
-  const index = ["home","morevcf","create","sessions","profile"].indexOf(pageId);
+  const index = ["home","create","sessions","profile"].indexOf(pageId);
   if(index !== -1) navItems[index].classList.add("active");
 };
 
@@ -190,36 +181,41 @@ window.createSession = async () => {
   if (!name || !target || !groupLink) { msg.textContent = "Required fields missing."; return; }
   const user = auth.currentUser;
   if (!user) return;
-  try {
-    await addDoc(collection(db, "users", user.uid, "sessions"), {
-      name, target, groupLink,
-      createdAt: new Date(),
-      prefix: document.getElementById("sessionPrefix").value.trim() || "🚀 ",
-      country: document.getElementById("sessionCountry").value,
-      duration: parseInt(document.getElementById("sessionDuration").value) || 7
-    });
-    msg.textContent = "Session created!";
-    navigate('sessions');
-  } catch(e) { msg.textContent = "Error: " + e.message; }
+  const sessionId = push(ref(db, 'users/' + user.uid + '/sessions')).key;
+  const sessionData = {
+    name, target, groupLink,
+    createdAt: Date.now(),
+    prefix: document.getElementById("sessionPrefix").value.trim() || "🚀 ",
+    country: document.getElementById("sessionCountry").value,
+    duration: parseInt(document.getElementById("sessionDuration").value) || 7
+  };
+  // Write to user's own list and to the public /sessions/ list
+  await set(ref(db, 'users/' + user.uid + '/sessions/' + sessionId), sessionData);
+  await set(ref(db, 'sessions/' + sessionId), {
+    ...sessionData,
+    owner: user.uid
+  });
+  msg.textContent = "Session created!";
+  navigate('sessions');
 };
 
 // Load user sessions
 function loadMySessions(uid) {
-  const q = query(collection(db, "users", uid, "sessions"), orderBy("createdAt", "desc"));
-  onSnapshot(q, (snap) => {
+  const userSessionsRef = ref(db, 'users/' + uid + '/sessions');
+  onValue(userSessionsRef, (snap) => {
     const list = document.getElementById("mySessionsList");
     list.innerHTML = "";
-    if (snap.empty) { list.innerHTML = "No sessions yet."; return; }
-    snap.forEach(doc => {
-      const s = doc.data();
+    const sessions = snap.val();
+    if (!sessions) { list.innerHTML = "No sessions yet."; return; }
+    Object.entries(sessions).forEach(([id, s]) => {
       const div = document.createElement("div");
       div.className = "session-row";
       div.innerHTML = `
         <div>
           <strong>${s.name}</strong> (${s.target} target)<br>
-          <a href="/dashboard.html?id=${doc.id}" class="link">View</a>
+          <a href="/?id=${id}" class="link" target="_blank">Public link</a>
         </div>
-        <button class="btn-sm" onclick="copyLink('${doc.id}')">Copy Link</button>
+        <button class="btn-sm" onclick="copyLink('${id}')">Copy Link</button>
       `;
       list.appendChild(div);
     });
@@ -231,29 +227,6 @@ window.copyLink = (sessionId) => {
   navigator.clipboard.writeText(link).then(() => alert("Link copied!")).catch(() => prompt("Copy:", link));
 };
 
-// Load public sessions
-function loadPublicSessions() {
-  const q = query(collection(db, "users"));
-  onSnapshot(q, (snap) => {
-    const list = document.getElementById("publicSessionsList");
-    list.innerHTML = "";
-    snap.forEach(userDoc => {
-      const sessionsRef = collection(db, "users", userDoc.id, "sessions");
-      onSnapshot(sessionsRef, (sessionsSnap) => {
-        sessionsSnap.forEach(sessionDoc => {
-          const s = sessionDoc.data();
-          const div = document.createElement("div");
-          div.className = "session-row";
-          div.innerHTML = `<div>${s.name} by ${userDoc.id}</div>
-            <a href="/?id=${sessionDoc.id}" class="btn-sm">Upload</a>`;
-          list.appendChild(div);
-        });
-      });
-    });
-  });
-}
-
-// Auth state listener
 onAuthStateChanged(auth, (user) => {
   if (user) {
     document.getElementById("authContainer").classList.add("hidden");
@@ -261,7 +234,6 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("userName").textContent = user.email;
     document.getElementById("profileEmail").textContent = user.email;
     loadMySessions(user.uid);
-    loadPublicSessions();
     navigate('home');
   } else {
     document.getElementById("authContainer").classList.remove("hidden");
@@ -270,4 +242,4 @@ onAuthStateChanged(auth, (user) => {
 });
 </script>
 </body>
-  </html>
+</html>
