@@ -95,7 +95,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, addDoc, collection, query, where, getDocs, onSnapshot, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getDatabase, ref, get, child, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQwmSD9lc6A0G-AhGBMCBayhM4Ox-jcEs",
@@ -107,7 +107,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = getDatabase(app);
 
 const urlParams = new URLSearchParams(window.location.search);
 const sessionId = urlParams.get('id');
@@ -121,12 +121,13 @@ let countries = [];
 fetch("countries.json").then(r => r.json()).then(data => {
   countries = data;
   initCountrySearch();
-}).catch(() => alert("Country list failed to load."));
+}).catch(() => alert("Country list failed to load. Please refresh."));
 
 function initCountrySearch() {
   const countrySearch = document.getElementById("countrySearch");
   const countryListDiv = document.getElementById("countryList");
   const selectedCountryCode = document.getElementById("selectedCountryCode");
+
   function render(filter = "") {
     const filtered = countries.filter(c => c.name.toLowerCase().includes(filter.toLowerCase()) || c.code.includes(filter));
     countryListDiv.innerHTML = "";
@@ -146,11 +147,13 @@ function initCountrySearch() {
     }
     countryListDiv.style.display = filtered.length > 0 ? "block" : "none";
   }
+
   countrySearch.addEventListener("input", () => render(countrySearch.value.trim()));
   countrySearch.addEventListener("focus", () => render(countrySearch.value.trim()));
   document.addEventListener("click", e => {
     if (!e.target.closest(".country-search-container")) countryListDiv.style.display = "none";
   });
+
   fetch("https://ipapi.co/json/").then(r => r.json()).then(d => {
     const found = countries.find(c => c.code === "+" + d.country_calling_code);
     if (found) {
@@ -160,15 +163,14 @@ function initCountrySearch() {
   }).catch(() => {});
 }
 
-// Load session data
-async function loadSession() {
-  const sessionRef = doc(db, "sessions", sessionId);
-  const sessionSnap = await getDoc(sessionRef);
-  if (!sessionSnap.exists()) {
+// Load session
+const sessionRef = ref(db, 'sessions/' + sessionId);
+get(sessionRef).then(snap => {
+  if (!snap.exists()) {
     document.getElementById("sessionName").textContent = "Session not found.";
     return;
   }
-  const session = sessionSnap.data();
+  const session = snap.val();
   document.title = `${session.name} – Alpha VCFS`;
   document.getElementById("sessionName").textContent = session.name || "VCF Session";
   document.getElementById("targetStat").textContent = session.target;
@@ -176,8 +178,8 @@ async function loadSession() {
   document.getElementById("uploadForm").classList.remove("hidden");
 
   // Listen to contacts count
-  const contactsRef = collection(db, "sessions", sessionId, "contacts");
-  onSnapshot(contactsRef, (snap) => {
+  const contactsRef = ref(db, 'sessions/' + sessionId + '/contacts');
+  onValue(contactsRef, (snap) => {
     const count = snap.size;
     document.getElementById("currentStat").textContent = count;
     document.getElementById("remainingStat").textContent = Math.max(session.target - count, 0);
@@ -186,9 +188,7 @@ async function loadSession() {
       document.getElementById("submitBtn").innerHTML = '<i class="fas fa-lock"></i> Session full';
     }
   });
-}
-
-loadSession();
+});
 
 // Upload handler
 window.handleUpload = async () => {
@@ -210,7 +210,8 @@ window.handleUpload = async () => {
   btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Uploading...';
 
   try {
-    await addDoc(collection(db, "sessions", sessionId, "contacts"), {
+    const newContactRef = push(ref(db, 'sessions/' + sessionId + '/contacts'));
+    await set(newContactRef, {
       name, email, phone: fullNumber, timestamp: Date.now()
     });
     window.location.href = document.getElementById("joinGroupBtn").href;
