@@ -58,7 +58,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, where, doc, deleteDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getDatabase, ref, get, child, remove, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQwmSD9lc6A0G-AhGBMCBayhM4Ox-jcEs",
@@ -71,7 +71,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db = getDatabase(app);
 
 const ADMIN_EMAIL = "alexiomhungu9@gmail.com";
 
@@ -97,43 +97,48 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-async function loadAdminData() {
-  const sessionsRef = collection(db, "sessions");
-  const sessionsSnap = await getDocs(sessionsRef);
-  const tbody = document.querySelector("#sessionsTable tbody");
-  tbody.innerHTML = "";
-  let totalSessions = 0, totalContacts = 0, userIds = new Set();
+function loadAdminData() {
+  const sessionsRef = ref(db, 'sessions');
+  onValue(sessionsRef, async (snap) => {
+    const sessions = snap.val();
+    const tbody = document.querySelector("#sessionsTable tbody");
+    tbody.innerHTML = "";
+    let totalSessions = 0, totalContacts = 0;
+    const userIds = new Set();
 
-  sessionsSnap.forEach(async (sessionDoc) => {
-    const session = sessionDoc.data();
-    totalSessions++;
-    if (session.userId) userIds.add(session.userId);
-    
-    const contactsRef = collection(db, "sessions", sessionDoc.id, "contacts");
-    const contactsSnap = await getDocs(contactsRef);
-    const contactCount = contactsSnap.size;
-    totalContacts += contactCount;
+    if (sessions) {
+      for (const [sessionId, session] of Object.entries(sessions)) {
+        totalSessions++;
+        if (session.owner) userIds.add(session.owner);
+        
+        // Get contacts count from Realtime Database
+        const contactsRef = ref(db, 'sessions/' + sessionId + '/contacts');
+        const contactsSnap = await get(contactsRef);
+        const contactCount = contactsSnap.size;
+        totalContacts += contactCount;
 
-    const row = tbody.insertRow();
-    row.innerHTML = `
-      <td>${session.name}</td>
-      <td>${session.target}</td>
-      <td>${contactCount}</td>
-      <td>${session.userId ? session.userId.substring(0,10)+'...' : 'unknown'}</td>
-      <td>
-        <button class="btn-sm btn-del" onclick="deleteSession('${sessionDoc.id}')">Delete</button>
-      </td>
-    `;
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${session.name}</td>
+          <td>${session.target}</td>
+          <td>${contactCount}</td>
+          <td>${session.owner ? session.owner.substring(0,10)+'...' : 'unknown'}</td>
+          <td>
+            <button class="btn-sm btn-del" onclick="deleteSession('${sessionId}')">Delete</button>
+          </td>
+        `;
+      }
+    }
+
+    document.getElementById("totalSessions").textContent = totalSessions;
+    document.getElementById("totalContacts").textContent = totalContacts;
+    document.getElementById("totalUsers").textContent = userIds.size;
   });
-
-  document.getElementById("totalSessions").textContent = totalSessions;
-  document.getElementById("totalContacts").textContent = totalContacts;
-  document.getElementById("totalUsers").textContent = userIds.size;
 }
 
 window.deleteSession = async (sessionId) => {
   if (confirm("Delete this session and all its contacts?")) {
-    await deleteDoc(doc(db, "sessions", sessionId));
+    await remove(ref(db, 'sessions/' + sessionId));
     alert("Deleted!");
     loadAdminData();
   }
