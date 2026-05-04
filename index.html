@@ -1,1 +1,264 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"><title>Alpha VCFS</title><meta property="og:title" content="Alpha VCFS"><meta property="og:description" content="Upload & unlock VCF"><meta property="og:image" content="https://i.ogp.me?title=Alpha+VCFS&subtitle=Boost+by+Alpha&icon=🚀"><meta property="og:url" content="https://app-status-views-boost.vercel.app"><meta property="og:type" content="website"><link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style>:root{--bg:#0b0f0b;--c:#121812;--t:#d0d0d0;--h:#fff;--s:#8b9a8b;--b:#1f2a1f;--i:#0a0f0a;--it:#fff;--btn:#4ade80;--btx:#000;--pb:#1e2a1e;--pt:#4ade80}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--t);font-family:Inter,system-ui,sans-serif;min-height:100vh;padding:25px 15px 100px;display:flex;justify-content:center}.c{width:100%;max-width:560px;position:relative}.tt{position:absolute;top:5px;right:0;background:var(--c);border:1px solid var(--b);color:var(--t);width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5}.lbtn{position:absolute;top:5px;right:50px;background:var(--c);border:1px solid var(--b);color:var(--t);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.9rem;z-index:5}.hd{text-align:left;margin-bottom:20px}.hd h1{font-size:2.1rem;font-weight:700;color:var(--h)}.sc{background:var(--c);border:1px solid var(--b);border-radius:12px;padding:16px;margin-bottom:16px}.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.sn{font-size:1.1rem;font-weight:600;color:var(--h)}.sm{font-size:.8rem;color:var(--s)}.pb{height:6px;background:#1e2a1e;border-radius:3px;overflow:hidden;margin:8px 0}.pf{height:100%;background:var(--btn);width:0}.br{display:flex;gap:8px;margin-top:12px}.bs{flex:1;padding:8px 12px;font-size:.85rem;border-radius:8px;border:none;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}.bu{background:var(--btn);color:var(--btx)}.bd{background:transparent;border:1px solid var(--btn);color:var(--btn)}.sr{display:flex;align-items:center;justify-content:space-between;background:var(--c);border:1px solid var(--b);border-radius:12px;padding:16px 10px;margin-bottom:25px}.si{text-align:center;flex:1}.snr{font-size:1.9rem;font-weight:700;color:var(--h)}.sl{font-size:.75rem;color:var(--s);text-transform:uppercase;letter-spacing:.8px;margin-top:5px}.dv{width:1px;background:var(--b);height:35px}.ca{background:var(--c);border:1px solid var(--b);border-radius:12px;padding:22px 18px;margin-bottom:18px}input,select{width:100%;padding:13px 12px;margin:8px 0;background:var(--i);border:1px solid var(--b);color:var(--it);font-size:.95rem;border-radius:8px;outline:none}button{width:100%;padding:13px 12px;margin:8px 0;background:var(--btn);color:var(--btx);border:none;font-weight:600;font-size:.95rem;border-radius:8px;cursor:pointer}button:disabled{background:#2a352a;color:#6b7b6b}.lg{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.lb{flex:1 1 auto;text-align:center;padding:12px 10px;border-radius:10px;text-decoration:none;font-size:.85rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;min-width:140px}.bw{background:#25D366}.bc{background:#128C7E}.bcr{background:#075e54}.csr{position:relative}.csr input{width:100%}.cl{position:absolute;top:100%;left:0;right:0;max-height:200px;overflow-y:auto;background:var(--c);border:1px solid var(--b);border-radius:0 0 8px 8px;z-index:10;display:none;color:var(--t)}.cl div{padding:10px;cursor:pointer}.cl div:hover{background:var(--btn);color:var(--btx)}.mod{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:100;display:flex;align-items:center;justify-content:center}.mb{background:var(--c);padding:25px;border-radius:12px;width:90%;max-width:400px}.hid{display:none!important}table{width:100%;border-collapse:collapse}th,td{padding:10px;text-align:left;border-bottom:1px solid var(--b)}th{color:var(--btn)}</style></head><body><div class="c" id="app"><div class="tt" id="tt"><i class="fas fa-moon"></i></div><button class="lbtn" id="lbtn" onclick="toggleAuthModal()"><i class="fas fa-sign-in-alt"></i> Login</button><div class="hd"><h1>Alpha VCFS</h1><div class="sub" id="st">Public Sessions</div></div><div id="bv"></div><div id="uv" class="hid"><div class="sr"><div class="si"><div class="snr" id="tgt">?</div><div class="sl">Target</div></div><div class="dv"></div><div class="si"><div class="snr" id="cur">0</div><div class="sl">Current</div></div><div class="dv"></div><div class="si"><div class="snr" id="rem">?</div><div class="sl">Remaining</div></div></div><div class="ca"><h3 id="sn">Loading…</h3><div id="uf" class="hid"><label>Full name</label><input type="text" id="fn" placeholder="Enter full name" required><label>Email <span style="opacity:.7">(optional)</span></label><input type="email" id="em" placeholder="Optional email"><label>Country code</label><div class="csr"><input type="text" id="cs" placeholder="Search country…" autocomplete="off"><div id="cl" class="cl"></div></div><input type="hidden" id="scc"><label>Phone number</label><input type="tel" id="ph" placeholder="e.g. 8012345678" required pattern="[0-9]{7,15}"><button id="sb" onclick="handleUpload()"><i class="fas fa-upload"></i> Upload contact</button></div><div id="msg" style="color:#f0f;text-align:center;margin-top:10px"></div><div class="lg"><a id="jg" class="lb bw" href="#" target="_blank"><i class="fab fa-whatsapp"></i> Join group</a><a class="lb bc" href="https://whatsapp.com/channel/0029Vb7nHdBFnSzBDbvL6y1X" target="_blank"><i class="fas fa-bullhorn"></i> Channel</a><a class="lb bcr" href="https://wa.me/263786641436?text=Hi%20Alpha%2C%20I%20want%20a%20session" target="_blank"><i class="fab fa-whatsapp"></i> Create VCF</a></div></div></div><div id="ud" class="hid"><div class="ca"><h2>Welcome, <span id="ue"></span></h2><button onclick="logout()" style="background:#f0f;color:#fff;">Logout</button></div><div class="ca"><h3>Create New Session</h3><input type="text" id="sn2" placeholder="Session name"><input type="number" id="st2" placeholder="Target contacts"><input type="text" id="sg" placeholder="WhatsApp group link"><button onclick="createSession()">Create Session</button><div id="cmsg" style="color:#f0f;margin-top:5px"></div></div><div class="ca"><h3>My Sessions</h3><div id="ms"></div></div></div><div id="ap" class="hid"><div class="ca"><h2>Admin Dashboard</h2><button onclick="logout()" style="background:#f0f;color:#fff;">Logout</button></div><div class="sr"><div class="si"><div class="snr" id="ats">0</div><div class="sl">Total Sessions</div></div><div class="si"><div class="snr" id="atc">0</div><div class="sl">Total Contacts</div></div></div><div class="ca"><h3>All Sessions</h3><table id="at"><thead><tr><th>Name</th><th>Target</th><th>Contacts</th><th>Actions</th></tr></thead><tbody></tbody></table></div></div><footer>Alpha VCFS 2026 · Built by <span>Alpha</span></footer></div><div id="am" class="mod hid"><div class="mb" id="lb2"><h2>Login</h2><input type="email" id="le" placeholder="Email"><input type="password" id="lp" placeholder="Password"><button onclick="authLogin()">Login</button><p style="margin-top:10px">No account? <a href="#" onclick="showSignup()" style="color:var(--btn)">Sign up</a></p><button onclick="closeAuthModal()" style="background:transparent;border:1px solid var(--b);color:var(--t);margin-top:8px">Cancel</button></div><div class="mb hid" id="sb2"><h2>Sign Up</h2><input type="email" id="se" placeholder="Email"><input type="password" id="sp" placeholder="Password"><button onclick="authSignup()">Sign Up</button><p style="margin-top:10px">Already have account? <a href="#" onclick="showLoginBox()" style="color:var(--btn)">Login</a></p><button onclick="closeAuthModal()" style="background:transparent;border:1px solid var(--b);color:var(--t);margin-top:8px">Cancel</button></div></div><script type="module">import{initializeApp}from"https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";import{getDatabase,ref,get,set,push,onValue,remove}from"https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";const fc={apiKey:"AIzaSyAQwmSD9lc6A0G-AhGBMCBayhM4Ox-jcEs",authDomain:"status-views-boost.firebaseapp.com",projectId:"status-views-boost",storageBucket:"status-views-boost.firebasestorage.app",messagingSenderId:"497892708994",appId:"1:497892708994:web:a169130977e576f0915a9b"},app=initializeApp(fc),auth=getAuth(app),db=getDatabase(app),ADM="alexiomhungu9@gmail.com";let U=null,countries=[];fetch("countries.json").then(r=>r.json()).then(d=>{countries=d}).catch(()=>{});const P=new URLSearchParams(location.search),sid=P.get("id");document.getElementById("tt").onclick=()=>{document.body.classList.toggle("lt"),document.querySelector(".tt i").classList.toggle("fa-moon")};window.toggleAuthModal=()=>document.getElementById("am").classList.toggle("hid");window.closeAuthModal=()=>document.getElementById("am").classList.add("hid");window.showSignup=()=>{document.getElementById("lb2").classList.add("hid"),document.getElementById("sb2").classList.remove("hid")};window.showLoginBox=()=>{document.getElementById("sb2").classList.add("hid"),document.getElementById("lb2").classList.remove("hid")};window.authLogin=async()=>{try{await signInWithEmailAndPassword(auth,document.getElementById("le").value,document.getElementById("lp").value),closeAuthModal()}catch(e){alert(e.message)}};window.authSignup=async()=>{try{await createUserWithEmailAndPassword(auth,document.getElementById("se").value,document.getElementById("sp").value),closeAuthModal()}catch(e){alert(e.message)}};window.logout=()=>{signOut(auth),showBrowser()};onAuthStateChanged(auth,u=>{U=u;const lb=document.getElementById("lbtn");if(u){lb.innerHTML='<i class="fas fa-user"></i> '+u.email.split('@')[0];if(u.email===ADM)showAdmin();else showUserDash()}else{lb.innerHTML='<i class="fas fa-sign-in-alt"></i> Login';lb.onclick=toggleAuthModal;if(!sid)showBrowser()}});function hideAll(){document.getElementById("bv").classList.add("hid"),document.getElementById("uv").classList.add("hid"),document.getElementById("ud").classList.add("hid"),document.getElementById("ap").classList.add("hid")}function showBrowser(){hideAll(),document.getElementById("bv").classList.remove("hid"),document.getElementById("st").innerText="Public Sessions",loadPub()}async function loadPub(){const list=document.getElementById("bv"),snap=await get(ref(db,"sessions"));if(!snap.exists()){list.innerHTML='<p style="color:var(--s);text-align:center;padding:40px 0">No sessions yet.</p>';return}const sessions=snap.val(),cards=await Promise.all(Object.entries(sessions).map(async([id,s])=>{const cs=await get(ref(db,`sessions/${id}/contacts`)),cnt=cs.size,prog=s.target>0?Math.round(cnt/s.target*100):0;return{id,...s,cnt,prog}}));cards.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));let html="";cards.forEach(c=>{html+=`<div class="sc"><div class="sh"><span class="sn">${c.name||"Untitled"}</span><span style="font-size:.8rem;color:var(--s)">${c.cnt}/${c.target}</span></div><div class="sm">by ${c.owner?c.owner.substring(0,10)+"...":"unknown"}</div><div class="pb"><div class="pf" style="width:${c.prog}%"></div></div><div class="br"><a href="/?id=${c.id}" class="bs bu"><i class="fas fa-upload"></i>Upload</a><button class="bs bd" disabled><i class="fas fa-download"></i>Download</button></div></div>`}),list.innerHTML=html}function showUpload(id){hideAll(),document.getElementById("uv").classList.remove("hid"),document.getElementById("st").innerHTML='<span>Public upload page</span><span class="prefix-badge"><i class="fas fa-rocket"></i> prefix active</span>';const sref=ref(db,"sessions/"+id);get(sref).then(snap=>{if(!snap.exists()){document.getElementById("sn").textContent="Session not found.";return}const s=snap.val();document.title=`${s.name} – Alpha VCFS`,document.getElementById("sn").textContent=s.name||"VCF Session",document.getElementById("tgt").textContent=s.target,document.getElementById("jg").href=s.groupLink,document.getElementById("uf").classList.remove("hid");const cref=ref(db,`sessions/${id}/contacts`);onValue(cref,csnap=>{const cnt=csnap.size;document.getElementById("cur").textContent=cnt,document.getElementById("rem").textContent=Math.max(s.target-cnt,0);if(cnt>=s.target)document.getElementById("sb").disabled=!0,document.getElementById("sb").innerHTML='<i class="fas fa-lock"></i> Session full'})}),countries.length?initCS():setTimeout(initCS,500)}function initCS(){const s=document.getElementById("cs"),l=document.getElementById("cl"),c=document.getElementById("scc");function render(filter=""){const f=countries.filter(x=>x.name.toLowerCase().includes(filter.toLowerCase())||x.code.includes(filter));l.innerHTML="";if(!f.length)l.innerHTML='<div style="padding:10px;color:var(--s)">No country found</div>';else{f.forEach(x=>{const d=document.createElement("div");d.textContent=`${x.flag} ${x.name} (${x.code})`,d.addEventListener("click",()=>{s.value=`${x.flag} ${x.name} (${x.code})`,c.value=x.code,l.style.display="none"}),l.appendChild(d)})}l.style.display=f.length?"block":"none"}s.oninput=()=>render(s.value.trim()),s.onfocus=()=>render(s.value.trim()),document.addEventListener("click",e=>{if(!e.target.closest(".csr"))l.style.display="none"});fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{const found=countries.find(x=>x.code==="+"+d.country_calling_code);if(found)s.value=`${found.flag} ${found.name} (${found.code})`,c.value=found.code}).catch(()=>{})}window.handleUpload=async()=>{const name=document.getElementById("fn").value.trim();let email=document.getElementById("em").value.trim();email||(email="no-email@example.com");const p=document.getElementById("ph").value.trim(),cc=document.getElementById("scc").value,msg=document.getElementById("msg");msg.textContent="";if(!name||!p){msg.textContent="❌ Name and phone required.";return}if(!/^[0-9]{7,15}$/.test(p)){msg.textContent="❌ Invalid phone.";return}if(!cc){alert("Select country first.");return}const fpn=cc+p,btn=document.getElementById("sb");btn.disabled=!0,btn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Uploading...';try{await set(push(ref(db,`sessions/${sid}/contacts`)),{name,email,phone:fpn,timestamp:Date.now()}),window.location.href=document.getElementById("jg").href}catch(e){msg.textContent="❌ "+e.message,btn.disabled=!1,btn.innerHTML='<i class="fas fa-upload"></i> Upload contact'}};function showUserDash(){if(!U)return;hideAll(),document.getElementById("ud").classList.remove("hid"),document.getElementById("ue").textContent=U.email,document.getElementById("st").innerText="User Dashboard",loadUserSessions()}async function loadUserSessions(){const list=document.getElementById("ms"),snap=await get(ref(db,`users/${U.uid}/sessions`));if(!snap.exists()){list.innerHTML="No sessions yet.";return}const sessions=snap.val();let html="";Object.entries(sessions).forEach(([id,s])=>{html+=`<div class="sc"><strong>${s.name}</strong> (${s.target})<br><button class="bs bu" onclick="copyLink('${id}')">Copy Link</button></div>`}),list.innerHTML=html}window.copyLink=(id)=>{const link=`${location.origin}/?id=${id}`;navigator.clipboard.writeText(link).then(()=>alert("Link copied!"))};window.createSession=async()=>{const name=document.getElementById("sn2").value.trim(),target=parseInt(document.getElementById("st2").value),group=document.getElementById("sg").value.trim();if(!name||!target||!group){document.getElementById("cmsg").textContent="All fields required.";return}const uid=U.uid,nid=push(ref(db,`users/${uid}/sessions`)).key,data={name,target,groupLink:group,createdAt:Date.now(),prefix:"🚀 "};await set(ref(db,`users/${uid}/sessions/${nid}`),data),await set(ref(db,`sessions/${nid}`),{...data,owner:uid}),document.getElementById("cmsg").textContent="Session created!",loadUserSessions()};function showAdmin(){if(!U||U.email!==ADM)return;hideAll(),document.getElementById("ap").classList.remove("hid"),document.getElementById("st").innerText="Admin Dashboard",loadAdmin()}async function loadAdmin(){const sref=ref(db,"sessions"),snap=await get(sref);let tc=0,ts=0;const tbody=document.querySelector("#at tbody");tbody.innerHTML="";if(snap.exists()){const sessions=snap.val();ts=Object.keys(sessions).length;for(const[id,s]of Object.entries(sessions)){const cs=await get(ref(db,`sessions/${id}/contacts`)),cnt=cs.size;tc+=cnt;const row=tbody.insertRow();row.innerHTML=`<td>${s.name}</td><td>${s.target}</td><td>${cnt}</td><td><button class="bs bu" style="background:#f0f;color:#fff" onclick="delSession('${id}')">Delete</button></td>`}}document.getElementById("ats").textContent=ts,document.getElementById("atc").textContent=tc}window.delSession=async(id)=>{if(confirm("Delete session and all contacts?"))await remove(ref(db,`sessions/${id}`)),alert("Deleted."),loadAdmin()};if(sid)showUpload(sid);else if(!U)showBrowser();</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Alpha VCFS – Status Views Boost by Alpha</title>
+<meta property="og:title" content="Alpha VCFS – Status Views Boost by Alpha">
+<meta property="og:description" content="Upload your contact & unlock the VCF file">
+<meta property="og:image" content="https://i.ogp.me?title=Alpha+VCFS&subtitle=Boost+by+Alpha&icon=🚀">
+<meta property="og:url" content="https://app-status-views-boost.vercel.app">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+:root {
+--bg:#0b0f0b;--c:#121812;--t:#d0d0d0;--h:#fff;--s:#8b9a8b;--b:#1f2a1f;
+--i:#0a0f0a;--it:#fff;--btn:#4ade80;--btx:#000;--pb:#1e2a1e;--pt:#4ade80;
+--nav-bg:#0b0f0b;--nav-bor:#1f2a1f;--nav-txt:#6b7b6b;--nav-act:#4ade80
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t);font-family:Inter,system-ui,sans-serif;min-height:100vh;padding-bottom:70px;display:flex;justify-content:center}
+.c{width:100%;max-width:600px;padding:15px}
+.ca{background:var(--c);border:1px solid var(--b);border-radius:12px;padding:20px;margin-bottom:20px}
+h2,h3{color:var(--h);margin-bottom:10px}
+p{color:var(--s);font-size:0.9rem}
+input,select,button{width:100%;padding:12px;margin:8px 0;background:var(--i);border:1px solid var(--b);color:var(--it);font-size:0.95rem;border-radius:8px;outline:none}
+button{background:var(--btn);color:var(--btx);font-weight:600;cursor:pointer;border:none}
+button:hover{filter:brightness(1.1)}
+button:disabled{background:#2a352a;color:#6b7b6b}
+.hid{display:none!important}
+.warn{color:#f0f;margin-top:5px;font-size:0.85rem}
+.link{color:var(--btn);text-decoration:none}
+.bs{padding:6px 10px;font-size:0.8rem;width:auto;background:var(--btn);color:var(--btx);border:none;border-radius:6px;cursor:pointer}
+.bo{background:transparent;border:1px solid var(--btn);color:var(--btn)}
+.sr{display:flex;align-items:center;justify-content:space-between;background:var(--c);border:1px solid var(--b);border-radius:12px;padding:16px 10px;margin-bottom:20px}
+.si{text-align:center;flex:1}
+.snr{font-size:1.9rem;font-weight:700;color:var(--h)}.sl{font-size:.75rem;color:var(--s);text-transform:uppercase;letter-spacing:.8px;margin-top:5px}
+.dv{width:1px;background:var(--b);height:35px}
+.sc{background:var(--c);border:1px solid var(--b);border-radius:10px;padding:15px;margin-bottom:12px}
+.sh{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px}
+.sn{font-size:1.1rem;font-weight:600;color:var(--h)}.sm{font-size:.8rem;color:var(--s)}
+.pb{height:6px;background:#1e2a1e;border-radius:3px;overflow:hidden;margin:8px 0}.pf{height:100%;background:var(--btn);width:0}
+.br{display:flex;gap:8px;margin-top:10px}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--nav-bg);border-top:1px solid var(--nav-bor);display:flex;justify-content:space-around;padding:10px 5px 15px;z-index:10}
+.ni{display:flex;flex-direction:column;align-items:center;color:var(--nav-txt);font-size:0.7rem;cursor:pointer}
+.ni.ac{color:var(--nav-act)}.ni i{font-size:1.2rem;margin-bottom:2px}
+.csr{position:relative}.csr input{width:100%}
+.cl{position:absolute;top:100%;left:0;right:0;max-height:200px;overflow-y:auto;background:var(--c);border:1px solid var(--b);border-radius:0 0 8px 8px;z-index:10;display:none;color:var(--t)}.cl div{padding:10px;cursor:pointer}.cl div:hover{background:var(--btn);color:var(--btx)}
+.mod{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:100;display:flex;align-items:center;justify-content:center}.mb{background:var(--c);padding:25px;border-radius:12px;width:90%;max-width:400px}
+table{width:100%;border-collapse:collapse}th,td{padding:10px;text-align:left;border-bottom:1px solid var(--b);font-size:0.9rem}th{color:var(--btn)}
+</style>
+</head>
+<body>
+<div class="c" id="app">
+
+<!-- HOME PAGE (public sessions) -->
+<div id="home">
+<div class="ca">
+<h2>Alpha VCFS</h2>
+<p style="margin-bottom:10px">Public sessions you can browse.</p>
+<div id="pubList"><p style="color:var(--s);text-align:center;padding:20px 0">Loading sessions…</p></div>
+</div>
+<footer style="text-align:center;color:var(--s);font-size:0.7rem;margin-top:20px">Alpha VCFS 2026 · Built by <span>Alpha</span></footer>
+</div>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="hid">
+<div class="ca">
+<h2>Login</h2>
+<input type="email" id="le" placeholder="Email"><input type="password" id="lp" placeholder="Password">
+<button onclick="authLogin()">Login</button>
+<p style="margin-top:10px">No account? <a href="#" onclick="showSignupPage()" class="link">Sign up</a></p>
+</div>
+</div>
+
+<!-- SIGNUP PAGE -->
+<div id="signupPage" class="hid">
+<div class="ca">
+<h2>Sign Up</h2>
+<input type="email" id="se" placeholder="Email"><input type="password" id="sp" placeholder="Password">
+<button onclick="authSignup()">Sign Up</button>
+<p style="margin-top:10px">Already have an account? <a href="#" onclick="showLoginPage()" class="link">Login</a></p>
+</div>
+</div>
+
+<!-- USER DASHBOARD -->
+<div id="userDash" class="hid">
+<div class="ca">
+<h2>Welcome, <span id="ue"></span></h2>
+<p>Account status: <span id="plan">Free</span></p>
+<p>Total sessions: <span id="tsess">0</span></p>
+<button onclick="navTo('createSession')">Create Session</button>
+<button onclick="navTo('mySessions')" style="background:transparent;border:1px solid var(--btn);color:var(--btn)">Manage Sessions</button>
+<button onclick="logout()" style="background:#f0f;color:#fff;margin-top:10px">Logout</button>
+</div>
+<div class="ca">
+<h3>Quick Actions</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div onclick="navTo('createSession')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer">➕ Create</div>
+<div onclick="navTo('mySessions')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer">📋 Sessions</div>
+<div onclick="navTo('home')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer">🌐 More VCF</div>
+<div onclick="navTo('upgrade')" style="background:#1e2a1e;padding:12px;border-radius:8px;text-align:center;cursor:pointer">⭐ Upgrade</div>
+</div>
+</div>
+</div>
+
+<!-- CREATE SESSION -->
+<div id="createSession" class="hid">
+<div class="ca">
+<h2>Create VCF Session</h2>
+<input type="text" id="sn2" placeholder="Session name"><input type="number" id="st2" placeholder="Target people count">
+<input type="number" id="sd" placeholder="Duration in days"><input type="text" id="sg" placeholder="WhatsApp group link">
+<input type="text" id="sp2" placeholder="Prefix (e.g. 🚀 VIP)"><select id="sco"><option value="">Any country</option><option value="+263">Zimbabwe</option><option value="+234">Nigeria</option></select>
+<button onclick="createSession()">Create Session</button><div id="cmsg" class="warn"></div>
+</div>
+</div>
+
+<!-- MY SESSIONS -->
+<div id="mySessions" class="hid">
+<div class="ca"><h2>My Sessions</h2><div id="ms">No sessions yet.</div></div>
+</div>
+
+<!-- UPGRADE -->
+<div id="upgrade" class="hid">
+<div class="ca"><h2>Upgrade to Pro</h2><p>Unlock unlimited sessions, premium downloads, and more.</p><p style="font-size:1.5rem;font-weight:700;margin:10px 0">Coming Soon</p></div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminDash" class="hid">
+<div class="ca"><h2>Admin Dashboard</h2><button onclick="logout()" style="background:#f0f;color:#fff">Logout</button></div>
+<div class="sr"><div class="si"><div class="snr" id="ats">0</div><div class="sl">Total Sessions</div></div><div class="si"><div class="snr" id="atc">0</div><div class="sl">Total Contacts</div></div></div>
+<div class="ca"><h3>All Sessions</h3><table id="at"><thead><tr><th>Name</th><th>Target</th><th>Contacts</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+</div>
+
+<!-- PUBLIC UPLOAD (when ?id=...) -->
+<div id="uploadView" class="hid">
+<div class="sr"><div class="si"><div class="snr" id="tgt">?</div><div class="sl">Target</div></div><div class="dv"></div><div class="si"><div class="snr" id="cur">0</div><div class="sl">Current</div></div><div class="dv"></div><div class="si"><div class="snr" id="rem">?</div><div class="sl">Remaining</div></div></div>
+<div class="ca"><h3 id="sn3">Loading…</h3>
+<div id="uf">
+<label>Full name</label><input type="text" id="fn" placeholder="Enter full name" required>
+<label>Email <span style="opacity:.7">(optional)</span></label><input type="email" id="em" placeholder="Optional email">
+<label>Country code</label><div class="csr"><input type="text" id="cs" placeholder="Search country…" autocomplete="off"><div id="cl" class="cl"></div></div>
+<input type="hidden" id="scc"><label>Phone number</label><input type="tel" id="ph" placeholder="e.g. 8012345678" required pattern="[0-9]{7,15}">
+<button id="sb" onclick="handleUpload()"><i class="fas fa-upload"></i> Upload contact</button>
+</div>
+<div id="msg" class="warn"></div>
+<div style="margin-top:15px"><a id="jg" class="bs" href="#" target="_blank" style="display:block;width:100%;text-align:center;padding:12px;background:#25D366;color:#fff;border-radius:8px;text-decoration:none"><i class="fab fa-whatsapp"></i> Join WhatsApp Group</a></div>
+</div>
+<footer style="text-align:center;color:var(--s);font-size:0.7rem;margin-top:20px">Alpha VCFS 2026 · Built by <span>Alpha</span></footer>
+</div>
+
+</div>
+
+<nav class="bnav" id="bnav">
+<div class="ni ac" onclick="navTo('home')"><i class="fas fa-home"></i> Home</div>
+<div class="ni" onclick="navTo('publicSessions')"><i class="fas fa-globe"></i> More VCF</div>
+<div class="ni" onclick="navTo('createSession')"><i class="fas fa-plus-circle"></i> Create</div>
+<div class="ni" onclick="navTo('upgrade')"><i class="fas fa-star"></i> Upgrade</div>
+<div class="ni" onclick="navTo('profile')"><i class="fas fa-user"></i> Profile</div>
+</nav>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import{getDatabase,ref,get,set,push,onValue,remove}from"https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
+const fc={apiKey:"AIzaSyAQwmSD9lc6A0G-AhGBMCBayhM4Ox-jcEs",authDomain:"status-views-boost.firebaseapp.com",projectId:"status-views-boost",storageBucket:"status-views-boost.firebasestorage.app",messagingSenderId:"497892708994",appId:"1:497892708994:web:a169130977e576f0915a9b"};
+const app=initializeApp(fc),auth=getAuth(app),db=getDatabase(app),ADM="alexiomhungu9@gmail.com";
+let U=null,countries=[],currentPage='home';
+fetch("countries.json").then(r=>r.json()).then(d=>{countries=d}).catch(()=>{});
+
+const P=new URLSearchParams(location.search),sid=P.get("id");
+if(sid){showUploadView(sid);}
+
+const pages=['home','loginPage','signupPage','userDash','createSession','mySessions','upgrade','adminDash','uploadView'];
+window.navTo=(p)=>{
+pages.forEach(x=>document.getElementById(x)?.classList.add("hid"));
+const el=document.getElementById(p);if(el)el.classList.remove("hid");
+currentPage=p;
+document.querySelectorAll('.ni').forEach(x=>x.classList.remove("ac"));
+if(p==='home'||p==='publicSessions'){document.querySelector('.ni:nth-child(1)').classList.add("ac");if(p==='home')showHome();}
+if(p==='createSession')document.querySelector('.ni:nth-child(3)').classList.add("ac");
+if(p==='upgrade')document.querySelector('.ni:nth-child(4)').classList.add("ac");
+if(p==='profile'){document.querySelector('.ni:nth-child(5)').classList.add("ac");alert("Profile page coming soon");}
+};
+
+window.showLoginPage=()=>navTo('loginPage');
+window.showSignupPage=()=>navTo('signupPage');
+
+window.authLogin=async()=>{try{await signInWithEmailAndPassword(auth,document.getElementById("le").value,document.getElementById("lp").value)}catch(e){alert(e.message)}};
+window.authSignup=async()=>{try{await createUserWithEmailAndPassword(auth,document.getElementById("se").value,document.getElementById("sp").value)}catch(e){alert(e.message)}};
+window.logout=()=>{signOut(auth);navTo('home');showHome();};
+
+onAuthStateChanged(auth,u=>{
+U=u;
+if(u){
+if(u.email===ADM){navTo('adminDash');loadAdmin();}
+else{navTo('userDash');document.getElementById("ue").textContent=u.email;loadUserSessions();}
+}else{
+if(!sid)navTo('home');
+if(!sid)showHome();
+}
+});
+
+function showHome(){navTo('home');loadPub();}
+async function loadPub(){
+const list=document.getElementById("pubList"),snap=await get(ref(db,"sessions"));
+if(!snap.exists()){list.innerHTML='<p style="color:var(--s);text-align:center;padding:20px 0">No sessions available yet.</p>';return}
+const sessions=snap.val(),cards=await Promise.all(Object.entries(sessions).map(async([id,s])=>{const cs=await get(ref(db,`sessions/${id}/contacts`)),cnt=cs.size,prog=s.target>0?Math.round(cnt/s.target*100):0;return{id,...s,cnt,prog}}));
+cards.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+let html="";cards.forEach(c=>{html+=`<div class="sc"><div class="sh"><span class="sn">${c.name||"Untitled"}</span><span style="font-size:.8rem;color:var(--s)">${c.cnt}/${c.target}</span></div><div class="sm">by ${c.owner?c.owner.substring(0,10)+"...":"unknown"}</div><div class="pb"><div class="pf" style="width:${c.prog}%"></div></div><div class="br"><a href="/?id=${c.id}" class="bs" style="text-decoration:none">Upload</a><button class="bs bo" disabled>Download</button></div></div>`});
+list.innerHTML=html||'<p style="color:var(--s);text-align:center;padding:20px 0">No sessions available yet.</p>';
+}
+
+function showUploadView(id){
+pages.forEach(x=>document.getElementById(x)?.classList.add("hid"));
+document.getElementById("uploadView").classList.remove("hid");
+const sref=ref(db,"sessions/"+id);get(sref).then(snap=>{
+if(!snap.exists()){document.getElementById("sn3").textContent="Session not found.";return}
+const s=snap.val();document.title=`${s.name} – Alpha VCFS`;document.getElementById("sn3").textContent=s.name||"VCF Session";
+document.getElementById("tgt").textContent=s.target;document.getElementById("jg").href=s.groupLink;
+const cref=ref(db,`sessions/${id}/contacts`);onValue(cref,csnap=>{
+const cnt=csnap.size;document.getElementById("cur").textContent=cnt;document.getElementById("rem").textContent=Math.max(s.target-cnt,0);
+if(cnt>=s.target)document.getElementById("sb").disabled=!0,document.getElementById("sb").innerHTML='<i class="fas fa-lock"></i> Session full';
+});
+});
+if(countries.length)initCS();else setTimeout(initCS,500);
+}
+
+function initCS(){
+const s=document.getElementById("cs"),l=document.getElementById("cl"),c=document.getElementById("scc");
+function render(filter=""){const f=countries.filter(x=>x.name.toLowerCase().includes(filter.toLowerCase())||x.code.includes(filter));l.innerHTML="";if(!f.length)l.innerHTML='<div style="padding:10px;color:var(--s)">No country found</div>';else{f.forEach(x=>{const d=document.createElement("div");d.textContent=`${x.flag} ${x.name} (${x.code})`;d.addEventListener("click",()=>{s.value=`${x.flag} ${x.name} (${x.code})`;c.value=x.code;l.style.display="none"});l.appendChild(d)})}l.style.display=f.length?"block":"none"}
+s.oninput=()=>render(s.value.trim());s.onfocus=()=>render(s.value.trim());document.addEventListener("click",e=>{if(!e.target.closest(".csr"))l.style.display="none"});
+fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{const found=countries.find(x=>x.code==="+"+d.country_calling_code);if(found)s.value=`${found.flag} ${found.name} (${found.code})`,c.value=found.code}).catch(()=>{});
+}
+
+window.handleUpload=async()=>{
+const name=document.getElementById("fn").value.trim();let email=document.getElementById("em").value.trim();email||(email="no-email@example.com");
+const p=document.getElementById("ph").value.trim(),cc=document.getElementById("scc").value,msg=document.getElementById("msg");msg.textContent="";
+if(!name||!p){msg.textContent="❌ Name and phone required.";return}if(!/^[0-9]{7,15}$/.test(p)){msg.textContent="❌ Invalid phone.";return}if(!cc){alert("Select country first.");return}
+const fpn=cc+p,btn=document.getElementById("sb");btn.disabled=!0,btn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Uploading...';
+try{await set(push(ref(db,`sessions/${sid}/contacts`)),{name,email,phone:fpn,timestamp:Date.now()}),window.location.href=document.getElementById("jg").href}
+catch(e){msg.textContent="❌ "+e.message;btn.disabled=!1;btn.innerHTML='<i class="fas fa-upload"></i> Upload contact';}
+};
+
+async function loadUserSessions(){const list=document.getElementById("ms"),snap=await get(ref(db,`users/${U.uid}/sessions`));if(!snap.exists()){list.innerHTML="No sessions yet.";return}const sessions=snap.val();let html="";Object.entries(sessions).forEach(([id,s])=>{html+=`<div class="sc"><strong>${s.name}</strong> (${s.target})<br><button class="bs" onclick="copyLink('${id}')">Copy Link</button></div>`});list.innerHTML=html}
+window.copyLink=(id)=>{const link=`${location.origin}/?id=${id}`;navigator.clipboard.writeText(link).then(()=>alert("Link copied!"))};
+window.createSession=async()=>{
+const name=document.getElementById("sn2").value.trim(),target=parseInt(document.getElementById("st2").value),group=document.getElementById("sg").value.trim();
+if(!name||!target||!group){document.getElementById("cmsg").textContent="All fields required.";return}
+const uid=U.uid,nid=push(ref(db,`users/${uid}/sessions`)).key,data={name,target,groupLink:group,createdAt:Date.now(),prefix:"🚀 "};
+await set(ref(db,`users/${uid}/sessions/${nid}`),data);await set(ref(db,`sessions/${nid}`),{...data,owner:uid});
+document.getElementById("cmsg").textContent="Session created!";navTo('mySessions');loadUserSessions();
+};
+
+async function loadAdmin(){
+const sref=ref(db,"sessions"),snap=await get(sref);let tc=0,ts=0;const tbody=document.querySelector("#at tbody");tbody.innerHTML="";
+if(snap.exists()){const sessions=snap.val();ts=Object.keys(sessions).length;for(const[id,s]of Object.entries(sessions)){const cs=await get(ref(db,`sessions/${id}/contacts`)),cnt=cs.size;tc+=cnt;const row=tbody.insertRow();row.innerHTML=`<td>${s.name}</td><td>${s.target}</td><td>${cnt}</td><td><button class="bs" style="background:#f0f;color:#fff" onclick="delSession('${id}')">Delete</button></td>`}}
+document.getElementById("ats").textContent=ts;document.getElementById("atc").textContent=tc;
+}
+window.delSession=async(id)=>{if(confirm("Delete session and all contacts?"))await remove(ref(db,`sessions/${id}`)),alert("Deleted."),loadAdmin();};
+</script>
+</body>
+</html>
