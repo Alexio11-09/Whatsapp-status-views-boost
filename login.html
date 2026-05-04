@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpha VCFS - Login</title>
+  <style>
+    :root{--bg:#0b0f0b;--card:#121812;--text:#d0d0d0;--head:#fff;--sub:#8b9a8b;--bor:#1f2a1f;--inp-bg:#0a0f0a;--inp-txt:#fff;--btn:#4ade80;--btn-txt:#000}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+    .card{background:var(--card);border:1px solid var(--bor);border-radius:12px;padding:30px;width:100%;max-width:400px}
+    h2{color:var(--head);margin-bottom:20px;text-align:center}
+    input,button{width:100%;padding:13px;margin:8px 0;background:var(--inp-bg);border:1px solid var(--bor);color:var(--inp-txt);font-size:1rem;border-radius:8px;outline:none}
+    button{background:var(--btn);color:var(--btn-txt);font-weight:600;cursor:pointer;border:none}
+    button:hover{filter:brightness(1.1)}
+    .link{color:var(--btn);text-decoration:none}
+    .warn{color:#f0f;margin-top:10px;text-align:center}
+    .hidden{display:none!important}
+  </style>
+</head>
+<body>
+<div id="loginCard" class="card">
+  <h2>Login</h2>
+  <input type="email" id="loginEmail" placeholder="Email">
+  <input type="password" id="loginPassword" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p style="margin-top:15px;text-align:center;">No account? <a href="#" onclick="showSignup()" class="link">Sign up</a></p>
+  <div id="loginMsg" class="warn"></div>
+</div>
+
+<div id="signupCard" class="card hidden">
+  <h2>Sign Up</h2>
+  <input type="email" id="signupEmail" placeholder="Email">
+  <input type="password" id="signupPassword" placeholder="Password">
+  <button onclick="signup()">Sign Up</button>
+  <p style="margin-top:15px;text-align:center;">Already have an account? <a href="#" onclick="showLogin()" class="link">Login</a></p>
+  <div id="signupMsg" class="warn"></div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAQwmSD9lc6A0G-AhGBMCBayhM4Ox-jcEs",
+    authDomain: "status-views-boost.firebaseapp.com",
+    projectId: "status-views-boost",
+    storageBucket: "status-views-boost.firebasestorage.app",
+    messagingSenderId: "497892708994",
+    appId: "1:497892708994:web:a169130977e576f0915a9b"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const ADMIN_EMAIL = "alexiomhungu9@gmail.com";
+
+  window.login = async () => {
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+    const msg = document.getElementById("loginMsg");
+    msg.textContent = "";
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // Redirect will happen automatically via onAuthStateChanged
+    } catch (e) {
+      msg.textContent = e.message;
+    }
+  };
+
+  window.signup = async () => {
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    const msg = document.getElementById("signupMsg");
+    msg.textContent = "";
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      // Redirect will happen automatically via onAuthStateChanged
+    } catch (e) {
+      msg.textContent = e.message;
+    }
+  };
+
+  window.showSignup = () => {
+    document.getElementById("loginCard").classList.add("hidden");
+    document.getElementById("signupCard").classList.remove("hidden");
+  };
+  window.showLogin = () => {
+    document.getElementById("signupCard").classList.add("hidden");
+    document.getElementById("loginCard").classList.remove("hidden");
+  };
+
+  // 🎯 THE MAGIC: This part listens for login and redirects based on email
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      if (user.email === ADMIN_EMAIL) {
+        window.location.href = "/admin.html";
+      } else {
+        window.location.href = "/dashboard.html";
+      }
+    }
+  });
+</script>
+</body>
+</html>
